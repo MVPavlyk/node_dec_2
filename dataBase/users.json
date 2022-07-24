@@ -1,1 +1,12 @@
-[{"name":"Alina","age":900,"id":1},{"name":"Ivan","age":20,"id":2}]
+[
+  {
+    "name": "Alina",
+    "age": 900,
+    "id": 1
+  },
+  {
+    "name": "Ivan",
+    "age": 20,
+    "id": 2
+  }
+]

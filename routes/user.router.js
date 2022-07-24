@@ -3,6 +3,7 @@ const {commonMiddleware, userMiddleware} = require('../middlewares');
 const router = require('express').Router();
 
 router.get('/',
+    userMiddleware.isQueryValid,
     userController.getUsers
 );
 router.post('/',

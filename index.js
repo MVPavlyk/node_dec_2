@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 
 const {userRouter} = require('./routes');
 
-const {constants} = require('./config');
+const {config} = require('./config');
 
 const app = express();
 
@@ -22,6 +22,6 @@ app.use((err, req, res, next) => {
         });
 });
 
-app.listen(constants.PORT, () => {
-    console.log(`Started on port ${constants.PORT}`);
+app.listen(config.PORT, () => {
+    console.log(`Started on port ${config.PORT}`);
 });

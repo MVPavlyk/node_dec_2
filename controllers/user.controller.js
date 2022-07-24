@@ -1,10 +1,15 @@
-const {userService} = require('../services');
+const {userService, passwordService} = require('../services');
+const {userPresenter} = require('../presenters/user.presenter');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await userService.getAllUsers();
-            res.json(users).status(200);
+            const users = await userService.getAllUsers(req.query);
+            const usersForResponse = [];
+            for (const user of users) {
+                usersForResponse.push(userPresenter(user));
+            }
+            res.json(usersForResponse).status(200);
         } catch (e) {
             next(e);
         }
@@ -12,8 +17,9 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const newUser = await userService.createUser(req.body);
-            res.json(newUser).status(201);
+            const hashedPassword = await passwordService.hashPassword(req.body.password);
+            const newUser = await userService.createUser({...req.body, password: hashedPassword});
+            res.json(userPresenter(newUser)).status(201);
         } catch (e) {
             next(e);
         }
@@ -23,7 +29,7 @@ module.exports = {
     getUserById: async (req, res, next) => {
         try {
             const oneUser = req.user;
-            res.json(oneUser).status(200);
+            res.json(userPresenter(oneUser)).status(200);
         } catch (e) {
             next(e);
         }
@@ -32,7 +38,7 @@ module.exports = {
     updateUserById: async (req, res, next) => {
         try {
             const updatedUser = await userService.updateOneUser({_id: req.params.id}, req.body);
-            res.json(updatedUser).status(204);
+            res.json(userPresenter(updatedUser)).status(201);
         } catch (e) {
             next(e);
         }

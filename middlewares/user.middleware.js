@@ -1,5 +1,6 @@
 const {customError} = require('../errors');
 const {userService} = require('../services');
+const {userValidator, queryValidator} = require('../validators');
 
 module.exports = {
     isUserPresent: async (req, res, next) => {
@@ -22,23 +23,13 @@ module.exports = {
 
     isUserValidForCreate: async (req, res, next) => {
         try {
-            const {name, email, age, password} = req.body;
+            const {error, value} = userValidator.createUserValidator.validate(req.body);
 
-            if (!age || !Number.isInteger(age) || age < 18) {
-                return next(new customError('Age is not valid', 400));
+            if (error) {
+                return next(new customError(error.details[0].message, 400));
             }
 
-            if (!name || name.length < 3) {
-                return next(new customError('Name is not valid', 400));
-            }
-
-            if (!email || email.length < 3) {
-                return next(new customError('Email is not valid', 400));
-            }
-
-            if (!password || password.length < 3) {
-                return next(new customError('Password is not valid', 400));
-            }
+            req.body = value;
 
             next();
         } catch (e) {
@@ -47,15 +38,14 @@ module.exports = {
     },
     isUserValidForUpdate: async (req, res, next) => {
         try {
-            const {name, age} = req.body;
+            const {error, value} = userValidator.updateUserValidator.validate(req.body);
 
-            if (age && !Number.isInteger(age) || age < 18) {
-                return next(new customError('Age is not valid', 400));
+            if (error) {
+                return next(new customError(error.details[0].message, 400));
             }
 
-            if (name && name.length < 3) {
-                return next(new customError('Name is not valid', 400));
-            }
+            req.body = value;
+
             next();
         } catch (e) {
             next(e);
@@ -70,6 +60,22 @@ module.exports = {
             if (user) {
                 return next(new customError('User already created', 409));
             }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isQueryValid: async (req, res, next) => {
+        try {
+            const {error, value} = queryValidator.validate(req.query);
+
+            if (error) {
+                return next(new customError(error.details[0].message, 400));
+            }
+
+            req.query = value;
 
             next();
         } catch (e) {

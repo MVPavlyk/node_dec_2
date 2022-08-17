@@ -23,6 +23,8 @@ module.exports = {
 
     isUserValidForCreate: async (req, res, next) => {
         try {
+            console.log('1m');
+
             const {error, value} = userValidator.createUserValidator.validate(req.body);
 
             if (error) {
@@ -53,6 +55,8 @@ module.exports = {
     },
     isUserAlreadyCreated: async (req, res, next) => {
         try {
+            console.log('2m');
+
             const {email} = req.body;
 
             const user = await userService.getOneUser({email});
@@ -60,6 +64,8 @@ module.exports = {
             if (user) {
                 return next(new customError('User already created', 409));
             }
+
+            console.log('2m1');
 
             next();
         } catch (e) {
@@ -76,6 +82,40 @@ module.exports = {
             }
 
             req.query = value;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isUserValidForLogin: async (req, res, next) => {
+        try {
+            const {error, value} = userValidator.loginUserValidator.validate(req.body);
+
+            if (error) {
+                return next(new customError(error.details[0].message, 400));
+            }
+
+            req.body = value;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    isUserRegistered: async (req, res, next) => {
+        try {
+            const {email} = req.body;
+
+            const user = await userService.getOneUser({email});
+
+            if (!user) {
+                return next(new customError('User not found', 404));
+            }
+
+            req.user = user
 
             next();
         } catch (e) {

@@ -12,5 +12,10 @@ module.exports = {
     updateUserValidator: Joi.object({
         name: nameValidator,
         age: ageValidator
+    }),
+
+    loginUserValidator: Joi.object({
+        email: emailValidator,
+        password: passwordValidator
     })
 };

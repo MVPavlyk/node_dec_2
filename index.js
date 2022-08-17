@@ -10,7 +10,7 @@ const {config} = require('./config');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/dec');
+mongoose.connect(config.DATABASE);
 
 app.use(express.json());
 

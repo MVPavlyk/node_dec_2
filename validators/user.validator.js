@@ -15,7 +15,11 @@ module.exports = {
     }),
 
     loginUserValidator: Joi.object({
-        email: emailValidator,
-        password: passwordValidator
+        email: emailValidator.required(),
+        password: passwordValidator.required()
+    }),
+
+    emailValidator: Joi.object({
+        email: emailValidator.required(),
     })
 };

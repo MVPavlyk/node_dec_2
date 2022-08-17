@@ -18,5 +18,10 @@ router.post('/logout',
     authMiddleware.checkAccessToken,
     authController.logout
 );
+router.post('/forgotPassword',
+    userMiddleware.isEmailValid,
+    userMiddleware.isUserExistByEmail,
+    authController.forgotPassword
+);
 
 module.exports = router;

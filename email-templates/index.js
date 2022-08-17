@@ -12,6 +12,9 @@ module.exports = {
     [emailActions.USER_BANNED]: {
         subject: 'Ops, your account was blocked',
         template: 'banned'
+    },
+    [emailActions.LOGOUT]: {
+        subject: 'Bye',
+        template: 'logout'
     }
-
 };

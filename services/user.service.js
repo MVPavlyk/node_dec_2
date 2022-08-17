@@ -1,4 +1,5 @@
 const {User} = require('../dataBase');
+
 module.exports = {
     getAllUsers: async (params = {}) => {
         return User.find(params);

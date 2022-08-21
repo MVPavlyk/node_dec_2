@@ -21,5 +21,10 @@ module.exports = {
 
     emailValidator: Joi.object({
         email: emailValidator.required(),
+    }),
+
+    newPasswordValidator: Joi.object({
+        newPassword: passwordValidator.required(),
+        oldPassword: passwordValidator
     })
 };

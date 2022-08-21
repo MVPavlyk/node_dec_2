@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const {authController} = require('../controllers');
 const {userMiddleware, authMiddleware} = require('../middlewares');
+const {FORGOT_PASSWORD} = require('../config/email-actions.enum');
 
 
 router.post('/login',
@@ -9,7 +10,6 @@ router.post('/login',
     userMiddleware.isUserRegistered,
     authController.login
 );
-
 router.post('/refresh',
     authMiddleware.checkRefreshToken,
     authController.refresh
@@ -22,6 +22,17 @@ router.post('/forgotPassword',
     userMiddleware.isEmailValid,
     userMiddleware.isUserExistByEmail,
     authController.forgotPassword
+);
+router.post('/setForgotPassword',
+    authMiddleware.checkActionToken(FORGOT_PASSWORD),
+    authMiddleware.checkNewPassword,
+    authController.setForgotPassword,
+);
+router.post('/changePassword',
+    authMiddleware.checkAccessToken,
+    authMiddleware.checkOldPassword,
+    authMiddleware.checkNewPassword,
+    authController.setNewPassword
 );
 
 module.exports = router;

@@ -18,7 +18,6 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            console.log(1);
             const {name, email} = req.body;
 
             const hashedPassword = await passwordService.hashPassword(req.body.password);

@@ -1,6 +1,7 @@
-const {userService, passwordService, emailService} = require('../services');
+const {userService, passwordService, emailService, smsService} = require('../services');
 const {userPresenter} = require('../presenters/user.presenter');
-const {emailActions} = require('../config');
+const {emailActions} = require('../enums');
+const {smsTemplate} = require('../common');
 
 module.exports = {
     getUsers: async (req, res, next) => {
@@ -18,13 +19,15 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const {name, email} = req.body;
+            const {name, email, phoneNumber} = req.body;
 
             const hashedPassword = await passwordService.hashPassword(req.body.password);
 
             const newUser = await userService.createUser({...req.body, password: hashedPassword});
 
-            await emailService.sendMail(email, emailActions.WELCOME, {name})
+            await emailService.sendMail(email, emailActions.WELCOME, {name});
+
+            await smsService.sendSMS(phoneNumber, smsTemplate.WELCOME(name));
 
             res.json(userPresenter(newUser)).status(201);
         } catch (e) {

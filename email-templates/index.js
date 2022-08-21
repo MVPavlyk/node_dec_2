@@ -1,4 +1,4 @@
-const emailActions = require('../config/email-actions.enum');
+const emailActions = require('../enums/email-actions.enum');
 
 module.exports = {
     [emailActions.WELCOME]: {

@@ -53,11 +53,13 @@ module.exports = {
     },
     isUserAlreadyCreated: async (req, res, next) => {
         try {
-            const {email} = req.body;
+            const {email, phoneNumber} = req.body;
 
-            const user = await userService.getOneUser({email});
+            const userByEmail = await userService.getOneUser({email});
 
-            if (user) {
+            const userByPhone = await userService.getOneUser({phoneNumber});
+
+            if (userByEmail || userByPhone) {
                 return next(new customError('User already created', 409));
             }
 

@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const {authController} = require('../controllers');
 const {userMiddleware, authMiddleware} = require('../middlewares');
-const {FORGOT_PASSWORD} = require('../config/email-actions.enum');
+const {FORGOT_PASSWORD} = require('../enums/email-actions.enum');
 
 
 router.post('/login',

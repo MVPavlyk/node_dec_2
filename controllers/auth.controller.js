@@ -2,8 +2,8 @@ const {tokenService, passwordService, emailService} = require('../services');
 const {customError} = require('../errors');
 const {userPresenter} = require('../presenters/user.presenter');
 const {OAuth, ActionTokens, User} = require('../dataBase');
-const {emailActions} = require('../config');
-const {FORGOT_PASSWORD} = require('../config/email-actions.enum');
+const {emailActions} = require('../enums');
+const {FORGOT_PASSWORD} = require('../enums/email-actions.enum');
 
 module.exports = {
     login: async (req, res, next) => {
